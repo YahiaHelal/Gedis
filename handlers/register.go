@@ -11,4 +11,5 @@ func init() {
 
 func registerAppCommands() {
 	app.Handlers.RegisterCommandHandler(cmd.CommandPing, CmdPingHandler)
+	app.Handlers.RegisterCommandHandler(cmd.CommandEcho, CmdEchoHandler)
 }

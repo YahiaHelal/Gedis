@@ -11,7 +11,7 @@ import (
 func HandleCommand(cmdArgs *model.CommandArgs) string {
 	cmd := cmd.Command(cmdArgs.Cmd)
 	handler, ok := app.Handlers.GetHandlerFunc(cmd)
-	
+
 	if ok {
 		return handler(cmdArgs.Args)
 	}
@@ -23,4 +23,13 @@ func CmdPingHandler(args []string) string {
 		return utils.EncodeBulkString(args[0])
 	}
 	return "+PONG\r\n"
+}
+
+
+// BUG: handle no args panic
+func CmdEchoHandler(args []string) string {
+	if len(args) == 0 {
+		return errs.NewWrongArgsErr("wrong number of arguments for command", string(cmd.CommandEcho)).Error()
+	}
+	return utils.EncodeBulkString(args[0])
 }
