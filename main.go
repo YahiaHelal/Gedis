@@ -12,9 +12,6 @@ import (
 
 
 
-func encodeBulkString(s string) string {
-	return fmt.Sprintf("$%d\r\n%s\r\n", len(s), s)
-}
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)

@@ -6,6 +6,7 @@ import (
 	"github.com/YahiaHelal/Gedis/model"
 )
 
+// TODO: use stack to evaluate other than quotes arguments, like () [] {}
 func ParseArgs(line string) *model.CommandArgs {
 	var args []string
 	var current strings.Builder // single buffer
