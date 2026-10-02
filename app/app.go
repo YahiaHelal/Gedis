@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/YahiaHelal/Gedis/cmd"
+	"github.com/YahiaHelal/Gedis/model"
 )
 
 type App struct {
@@ -23,14 +24,16 @@ func (a *App) RegisterCommandHandler(cmd cmd.Command, handler cmd.HandlerFunc[[]
 	a.handlers[cmd] = handler
 }
 
-func (a *App) GetHandlerFunc(cmd cmd.Command) (cmd.HandlerFunc[[]string, string], bool) {
+func (a *App) GetHandlerFunc(cmdArgs *model.CommandArgs) (cmd.HandlerFunc[[]string, string], bool) {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
-	handler, ok := a.handlers[cmd]
-	return handler, ok
-	// if !ok {
-	// 	slog.Log(context.Background(), slog.LevelWarn, "Unknown handler for command: %s", cmd)
-	// 	return nil
-	// }
-	// return handler
+	if handler, ok := a.handlers[cmd.Command(cmdArgs.Cmd)]; ok {
+		return handler, ok
+	}
+	return nil, false
+}
+
+func (a *App) HasHandler(cmd cmd.Command) bool {
+	_, ok := a.handlers[cmd]
+	return ok
 }

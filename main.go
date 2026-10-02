@@ -10,9 +10,6 @@ import (
 	"github.com/YahiaHelal/Gedis/parser"
 )
 
-
-
-
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -26,4 +23,3 @@ func main() {
 		fmt.Print(response)
 	}
 }
-

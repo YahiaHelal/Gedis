@@ -5,31 +5,32 @@ import (
 	"github.com/YahiaHelal/Gedis/cmd"
 	"github.com/YahiaHelal/Gedis/errs"
 	"github.com/YahiaHelal/Gedis/model"
-	"github.com/YahiaHelal/Gedis/utils"
+	"github.com/YahiaHelal/Gedis/serialize"
 )
 
 func HandleCommand(cmdArgs *model.CommandArgs) string {
-	cmd := cmd.Command(cmdArgs.Cmd)
-	handler, ok := app.Handlers.GetHandlerFunc(cmd)
+	handler, ok := app.Handlers.GetHandlerFunc(cmdArgs)
 
 	if ok {
 		return handler(cmdArgs.Args)
 	}
-	return errs.NewUnknownCmdErr("Unknown command", cmdArgs.Cmd).Error()
+	return serialize.Error(errs.NewUnknownCmdErr("unknown command", cmdArgs.Cmd).Error())
 }
 
 func CmdPingHandler(args []string) string {
 	if len(args) > 0 {
-		return utils.EncodeBulkString(args[0])
+		return serialize.BulkString((args[0]))
 	}
 	return "+PONG\r\n"
 }
 
-
-// BUG: handle no args panic
 func CmdEchoHandler(args []string) string {
 	if len(args) == 0 {
-		return errs.NewWrongArgsErr("wrong number of arguments for command", string(cmd.CommandEcho)).Error()
+		return serialize.Error(errs.NewWrongArgsErr("wrong number of arguments for command", string(cmd.CommandEcho)).Error())
 	}
-	return utils.EncodeBulkString(args[0])
+	return serialize.BulkString(args[0])
+}
+
+func CmdDocsHandler(args []string) string {
+	return serialize.SimpleString("OK")
 }
