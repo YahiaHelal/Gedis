@@ -46,12 +46,8 @@ func tryConstruct(cmdArgs *model.CommandArgs) {
 
 	for idx, arg := range cmdArgs.Args {
 		trialCmd := cmd.Command((command.String()))
-		if app.Handlers.HasHandler(trialCmd) {
-			for _, i := range removedIdx {
-				cmdArgs.Args = utils.RemoveAtIndex(i, cmdArgs.Args)
-			}
-			cmdArgs.Cmd = command.String()
-			return
+		if app.CmdDispatcher.HasHandler(trialCmd) {
+			break
 		}
 
 		command.WriteString(" ")
@@ -59,11 +55,8 @@ func tryConstruct(cmdArgs *model.CommandArgs) {
 		removedIdx = append(removedIdx, idx)
 	}
 
-	if app.Handlers.HasHandler(cmd.Command((command.String()))) {
-		for _, i := range removedIdx {
-			cmdArgs.Args = utils.RemoveAtIndex(i, cmdArgs.Args)
-		}
-		cmdArgs.Cmd = command.String()
-		return
+	for _, i := range removedIdx {
+		cmdArgs.Args = utils.RemoveAtIndex(i, cmdArgs.Args)
 	}
+	cmdArgs.Cmd = command.String()
 }

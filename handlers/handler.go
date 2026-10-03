@@ -9,7 +9,7 @@ import (
 )
 
 func HandleCommand(cmdArgs *model.CommandArgs) string {
-	handler, ok := app.Handlers.GetHandlerFunc(cmdArgs)
+	handler, ok := app.CmdDispatcher.Dispatch(cmd.Command(cmdArgs.Cmd))
 
 	if ok {
 		return handler(cmdArgs.Args)

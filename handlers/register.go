@@ -10,7 +10,7 @@ func init() {
 }
 
 func registerAppCommands() {
-	app.Handlers.RegisterCommandHandler(cmd.CommandPing, CmdPingHandler)
-	app.Handlers.RegisterCommandHandler(cmd.CommandEcho, CmdEchoHandler)
-	app.Handlers.RegisterCommandHandler(cmd.CommandDocs, CmdDocsHandler) // READS COMMAND only as the command instead of command odcs
+	app.CmdDispatcher.Register(cmd.CommandPing, CmdPingHandler)
+	app.CmdDispatcher.Register(cmd.CommandEcho, CmdEchoHandler)
+	app.CmdDispatcher.Register(cmd.CommandDocs, CmdDocsHandler) // READS COMMAND only as the command instead of command odcs
 }
